@@ -1,0 +1,22 @@
+{
+  "name": "blrocker",
+  "version": "1.0.0",
+  "description": "tasks manager, with rejection handling automization",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublish": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kugimiya/blrocker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kugimiya/blrocker/issues"
+  },
+  "homepage": "https://github.com/kugimiya/blrocker#readme"
+}

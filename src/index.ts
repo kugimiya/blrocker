@@ -1,4 +1,4 @@
-class BLRocker {
+export class BLRocker {
   queue = [];
 
   rejectResolver;
@@ -51,5 +51,3 @@ class BLRocker {
     return result;
   }
 }
-
-module.exports = { BLRocker };

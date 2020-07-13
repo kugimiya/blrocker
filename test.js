@@ -1,4 +1,4 @@
-const { BLRocker } = require('./src/index');
+const { BLRocker } = require('./dist/index');
 
 var expired = true;
 
