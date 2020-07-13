@@ -1,17 +1,20 @@
-export class BLRocker {
-  queue = [];
+export class BLRocker<PType> {
+  queue: Array<() => Promise<PType> | Promise<PType>[]> = [];
 
-  rejectResolver;
-  rejectDetector;
+  rejectResolver: () => Promise<PType>;
+  rejectDetector: (data: PType) => boolean;
 
   loopRun = false;
   
-  constructor(rejectResolver, rejectDetector) {
+  constructor(
+    rejectResolver: () => Promise<PType>, 
+    rejectDetector: (data: PType) => boolean
+  ) {
     this.rejectResolver = rejectResolver;
     this.rejectDetector = rejectDetector;
   }
 
-  push(task) {
+  push(task: () => Promise<PType> | Promise<PType>[]) {
     this.queue.push(task);
 
     if (!this.loopRun) {
@@ -39,7 +42,7 @@ export class BLRocker {
     this.loop();
   }
 
-  async runTask(task) {
+  async runTask(task: () => Promise<PType> | Promise<PType>[]) {
     let result = null;
 
     if (task instanceof Array) {
