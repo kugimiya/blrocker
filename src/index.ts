@@ -2,13 +2,13 @@ export class BLRocker<PType> {
   queue: Array<() => Promise<PType> | Promise<PType>[]> = [];
 
   rejectResolver: () => Promise<PType>;
-  rejectDetector: (data: PType) => boolean;
+  rejectDetector: (data: PType | PType[]) => boolean;
 
   loopRun = false;
   
   constructor(
     rejectResolver: () => Promise<PType>, 
-    rejectDetector: (data: PType) => boolean
+    rejectDetector: (data: PType | PType[]) => boolean
   ) {
     this.rejectResolver = rejectResolver;
     this.rejectDetector = rejectDetector;
@@ -32,6 +32,10 @@ export class BLRocker<PType> {
 
     const task = this.queue.shift();
 
+    if (task === undefined) {
+      return;
+    }
+  
     let result = await this.runTask(task);
 
     if (this.rejectDetector(result)) {
@@ -42,13 +46,13 @@ export class BLRocker<PType> {
     this.loop();
   }
 
-  async runTask(task: () => Promise<PType> | Promise<PType>[]) {
-    let result = null;
+  async runTask(task: () => Promise<PType> | Promise<PType>[]): Promise<PType | PType[]> {
+    let result: PType | PType[];
 
     if (task instanceof Array) {
-      result = await Promise.all(task);
+      result = await Promise.all<PType>(task);
     } else {
-      result = await task();
+      result = await (task() as Promise<PType>);
     }
 
     return result;
